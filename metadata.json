@@ -1,0 +1,8 @@
+{
+  "name": "مكتبي - مكتبة الكتب متعددة اللغات",
+  "description": "منصة شخصية لعرض وتحميل الكتب بمختلف اللغات. تصفح الكتب وحملها مجاناً بكل سهولة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
