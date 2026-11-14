@@ -1,19 +1,57 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter Variable", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Cairo", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Cormorant Garamond Variable", "Amiri", serif;
 
-  --color-warm-beige: #fdfbf7;
-  --color-library-ink: #1a1a1a;
-  --color-library-accent: #5A5A40;
+  /* Maktabi editorial palette — warm paper + olive ink */
+  --color-canvas: #fdfbf7;
+  --color-surface: #ffffff;
+  --color-ink: #1f2018;
+
+  --color-brand-50: #f7f6ef;
+  --color-brand-100: #edeadd;
+  --color-brand-200: #d9d5bb;
+  --color-brand-300: #c2bb96;
+  --color-brand-400: #a89e74;
+  --color-brand-500: #8d8259;
+  --color-brand-600: #5a5a40;
+  --color-brand-700: #4a4b35;
+  --color-brand-800: #3c3d2d;
+  --color-brand-900: #2f3024;
 }
 
 body {
-  @apply bg-warm-beige text-library-ink font-sans;
-  direction: rtl; /* Arabic-first layout */
+  @apply bg-canvas text-ink font-sans antialiased;
 }
 
 .serif-title {
   @apply font-serif font-medium tracking-tight;
+}
+
+/* Thin, unobtrusive scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-300 rounded-full;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Simple fade-in used by route content */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fade-up 0.35s ease both;
 }

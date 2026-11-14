@@ -1,44 +1,139 @@
-export type EbookAccess = 'public' | 'borrowable' | 'printdisabled' | 'no_ebook';
-
-export interface Book {
-  /** Open Library work key without the "/works/" prefix, e.g. OL22015940W */
-  id: string;
-  title: string;
-  authors: string[];
-  year: number | null;
-  coverUrl: string | null;
-  languages: string[];
-  editionCount: number;
-  ebookAccess: EbookAccess;
-  /** Internet Archive page with full reader & download options */
-  readUrl: string | null;
-  /** Direct PDF download (only for public-domain / freely licensed books) */
-  downloadUrl: string | null;
+export interface Category {
+  id: number;
+  slug: string;
+  name_ar: string;
+  name_en: string;
+  image_url?: string | null;
 }
 
-export interface SearchResult {
-  books: Book[];
+export type BookFormat = 'paperback' | 'hardcover' | 'ebook';
+
+export interface Product {
+  id: number;
+  sku: string;
+  slug: string;
+  name_ar: string;
+  name_en: string;
+  description_ar: string;
+  description_en: string;
+  price: number;
+  compare_at_price: number | null;
+  stock: number;
+  brand: string | null;
+  images: string[];
+  specs: {ar: Record<string, string>; en: Record<string, string>};
+  is_featured: boolean;
+  rating_avg: number;
+  rating_count: number;
+  category: {id: number; slug: string; name_ar: string; name_en: string};
+  // Book metadata
+  ol_key: string | null;
+  ol_ia: string | null;
+  read_url: string | null;
+  authors: string[];
+  pub_year: number | null;
+  format: BookFormat;
+  isbn: string | null;
+  pages: number | null;
+  book_language: string;
+  created_at: string;
+}
+
+export interface ProductListResponse {
+  items: Product[];
   total: number;
   page: number;
   pages: number;
 }
 
-export interface Subject {
-  /** i18n key suffix, e.g. "fiction" -> t('subjects.fiction') */
-  id: string;
-  /** Open Library subject query */
-  query: string;
+export interface Review {
+  id: number;
+  rating: number;
+  title: string | null;
+  body: string | null;
+  created_at: string;
+  user_name: string;
 }
 
-export type SortOption = 'trending' | 'relevance' | 'newest' | 'oldest';
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: 'customer' | 'admin';
+  phone: string | null;
+  created_at: string;
+}
 
-export const SUBJECTS: Subject[] = [
-  {id: 'fiction', query: 'subject:fiction'},
-  {id: 'philosophy', query: 'subject:philosophy'},
-  {id: 'history', query: 'subject:history'},
-  {id: 'science', query: 'subject:science'},
-  {id: 'poetry', query: 'subject:poetry'},
-  {id: 'arabic', query: 'subject:"arabic language"'},
-  {id: 'children', query: 'subject:children'},
-  {id: 'business', query: 'subject:business'},
-];
+export interface CartItem {
+  id: number;
+  qty: number;
+  line_total: number;
+  product: Product;
+}
+
+export interface CartPayload {
+  items: CartItem[];
+  subtotal: number;
+  count: number;
+}
+
+export type OrderStatus =
+  | 'pending' | 'paid' | 'processing' | 'shipped'
+  | 'delivered' | 'cancelled' | 'refunded';
+
+export interface OrderItem {
+  id: number;
+  name_ar: string;
+  name_en: string;
+  image: string | null;
+  unit_price: number;
+  qty: number;
+  line_total: number;
+}
+
+export interface Order {
+  id: number;
+  order_number: string;
+  status: OrderStatus;
+  payment_method: 'cod' | 'card' | 'paypal';
+  payment_status: 'unpaid' | 'paid' | 'refunded';
+  paypal_order_id: string | null;
+  subtotal: number;
+  discount: number;
+  shipping_fee: number;
+  total: number;
+  coupon_code: string | null;
+  ship_name: string;
+  ship_phone: string;
+  ship_line1: string;
+  ship_city: string;
+  ship_country: string;
+  placed_at: string;
+  items: OrderItem[];
+}
+
+export interface Coupon {
+  code: string;
+  type: 'percent' | 'fixed';
+  value: number;
+  min_subtotal: number;
+  max_uses: number | null;
+  used_count: number;
+  expires_at: string | null;
+  is_active: number;
+}
+
+/** Open Library search hit used by the admin import tool. */
+export interface OlImportHit {
+  ol_key: string;
+  title: string;
+  authors: string[];
+  coverId: number | null;
+  coverUrl: string | null;
+  ia: string | null;
+  year: number | null;
+  publisher: string | null;
+  isbn: string | null;
+  pages: number | null;
+  language: string;
+}
